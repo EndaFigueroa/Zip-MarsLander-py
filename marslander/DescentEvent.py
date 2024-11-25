@@ -8,6 +8,9 @@ class DescentEvent:
 
     def get_velocity(self):
         return self.velocity
+    
+    def get_fuel(self):
+        return self.fuel
 
     def get_altitude(self):
         return self.altitude

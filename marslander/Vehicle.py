@@ -1,4 +1,4 @@
-
+from DescentEvent import DescentEvent
 class Vehicle:
     gravity = 100
 
@@ -15,10 +15,9 @@ class Vehicle:
 
     def __init__(self, initial_altitude):
         # initialize the altitude AND previous altitude to initialAltitude
-
+        self.initial_altitude=8000
         self.altitude= 8000
         self.prev_altitude= 8000
-
         self.velocity= 1000
         self.fuel = 12000
         self.burn = 0
@@ -45,28 +44,38 @@ class Vehicle:
 
 
     def compute_deltaV(self):
+        deltaV = self.velocity+100-self.burn
+        return deltaV
         # return velocity + gravity - burn amount
-        pass
 
     def adjust_for_burn(self, burnAmount):
+        self.burn = burnAmount
+        self.prev_altitude = self.altitude
+        self.velocity = self.compute_deltaV()
+        if self.velocity>0:
+            self.altitude = self.altitude-self.velocity
+        else:self.altitude=self.altitude-100
+        self.fuel = self.fuel-self.burn
         # set burn to burnamount requested
         # save previousAltitude with current Altitude
         # set new velocity to result of computeDeltaV function.
         # subtract speed from Altitude
         # subtract burn amount fuel used from tank
-        pass
 
     def still_flying(self):
+        if self.altitude > 2:
+            return True
         # return true if altitude is positive
-        pass
 
     def out_of_fuel(self):
+        if self.fuel <= 0:
+            return True
         # return true if fuel is less than or equal to zero
-        pass
 
     def get_status(self, tick):
+        phobos=DescentEvent(tick,self.velocity,self.fuel,self.altitude,0)
+        return phobos
         # create a return a new DescentEvent object
         # filled in with the state of the vehicle.
-        pass
 
 

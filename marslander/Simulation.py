@@ -60,8 +60,9 @@ class Simulation:
         self.print_string(self.get_header())
         while self.vehicle.still_flying():
             status = self.vehicle.get_status(burn_interval)
+            gas = status.get_fuel()
             print(f"{status}\t\t")
-            self.vehicle.adjust_for_burn(burn_source.get_next_burn(status))
+            self.vehicle.adjust_for_burn(burn_source.get_next_burn(burn_interval,gas))
             if self.vehicle.out_of_fuel():
                 break
             burn_interval += 1
@@ -75,7 +76,7 @@ class Simulation:
     @staticmethod
     def main():
         # create a new BurnInputStream
-        burnSource = BurnInputStream()
+        burnSource = OnBoardComputer()
         # create a new Simulation object with a random starting altitude
         game = Simulation(Vehicle(Simulation.random_altitude()))
         # pass the new BurnInputStream to the run_simulation method
